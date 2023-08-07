@@ -9,4 +9,5 @@ urlpatterns = [
     path('', views.Home.as_view(), name = 'home'),
     path('home/', views.Home.as_view(), name = 'home'),
     path('AddTitleView/', views.AddTitleView.as_view(), name = 'AddTitleView'),
+    path('list/album', views.ListAlbum.as_view(), name = 'list'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

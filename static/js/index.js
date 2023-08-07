@@ -23,3 +23,9 @@ removeImg = () => {
   document.getElementById("i").setAttribute("src", "");
   inputFile.value = "";
 };
+
+function popup(x) {
+  document.getElementById("popup-" + x).style.display = "block";
+  console.log("popup clicked");
+  console.log(x);
+}

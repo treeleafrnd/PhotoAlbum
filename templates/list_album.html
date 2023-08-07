@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{%block title%}
+Home Page
+{%endblock%}
+{% load static %}
+{%block body%}
+
+
+    <p>List of Album</p>
+    {% for image in album %}
+        <div class="popup-box" id="popup-{{image.id}}" style="display: none;">
+
+            {% for key, value in image_collection.items%}
+                {% if key == image.id %}
+                    <p>pop up box</p>
+                    {%for element in value%}
+                        <img src="http://localhost:8000/{{element}}" style="height: 75px;width: 75px;" alt="" onclick="closePopUp()">
+                        {%endfor%}
+                        {%endif%}
+                    {% endfor %}
+                </div>
+
+
+                <div class="gallery-image" id="image-{{image.id}}">
+
+                    {{image.title}}
+                    {% for key, value in image_collection.items%}
+                        {% if key == image.id %}
+
+
+                            <img src="http://localhost:8000/{{value.0}}" style="height: 75px;width: 75px;" alt="" onclick="popup(`{{image.id}}`)">
+
+                            {%endif%}
+                        {% endfor %}
+                    </div>
+
+
+                    {%endfor%}
+
+                {%endblock %}

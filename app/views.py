@@ -4,7 +4,7 @@ from django.views import View
 from django.core.exceptions import ValidationError
 from .models import Gallery
 from django.core.files.storage import FileSystemStorage
-import json
+import json, os
 import magic
 from django.conf import settings
 headers = {'content_type': 'application/json'}
@@ -51,14 +51,30 @@ class AddTitleView(View):
             for file in files:
                 fs = FileSystemStorage(location='media/' + str(a.id))
                 file_name = fs.save(file.name, file)
-                fs = FileSystemStorage(location='media/' + str(a.id))
-                file_name = fs.save(file.name, file)
-            
+ 
         return redirect("/home/")
 
 #         return render(request, 'home.html',)
-   
+
 class Home(View):
     def get(self, request):
         return render(request, 'home.html')
+
+
+class ListAlbum(View):
+    def get(self, request):
+        all_images = Gallery.objects.all()
+        image_collection = {}
+        for element in all_images:
+            image_folder = os.path.join(settings.MEDIA_ROOT, str(element.id))  
+            print(image_folder)
+            image_files = []
+            for filename in os.listdir(image_folder):
+                image_files.append(os.path.join(settings.MEDIA_URL, str(element.id), filename))
+            image_collection[element.id] = image_files
+        print(image_collection)
+        context = {
+        'album': all_images,'image_collection': image_collection,
+    }
+        return render(request, 'list_album.html', context=context)
 
