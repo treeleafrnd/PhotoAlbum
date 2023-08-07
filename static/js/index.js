@@ -29,3 +29,13 @@ function popup(x) {
   console.log("popup clicked");
   console.log(x);
 }
+function closePopUp(x) {
+  document.getElementById("popup-" + x).style.display = "none";
+  console.log("popup closed");
+  console.log(x);
+}
+function editTitle(x) {
+  document.getElementById("edit-title-" + x).style.display = "block";
+  console.log("title update popup opened");
+  console.log(x);
+}

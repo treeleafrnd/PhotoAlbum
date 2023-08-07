@@ -67,14 +67,66 @@ class ListAlbum(View):
         image_collection = {}
         for element in all_images:
             image_folder = os.path.join(settings.MEDIA_ROOT, str(element.id))  
-            print(image_folder)
+            # print(image_folder)
             image_files = []
+
             for filename in os.listdir(image_folder):
-                image_files.append(os.path.join(settings.MEDIA_URL, str(element.id), filename))
+                image_files.append(filename)
+                
             image_collection[element.id] = image_files
-        print(image_collection)
+        # print(image_collection)
         context = {
         'album': all_images,'image_collection': image_collection,
     }
         return render(request, 'list_album.html', context=context)
+
+class updateTitle(View):
+    def post(self, request, *args, **kwargs):
+        id = self.kwargs.get('id')
+        print("hi")
+        print(id)
+        obj = Gallery.objects.get(id=id)
+        obj.title = request.POST.get('title')
+
+        
+        saveData = Gallery(id = id,title=obj.title, )
+        saveData.save()
+        return redirect("/home/")
+    
+class deleteImage(View):
+    def get(self, request, *args, **kwargs):
+        id = self.kwargs.get('id')
+        image_name = self.kwargs.get('name')
+        print(image_name)
+
+        # path = "D:/Pycharm projects/GeeksforGeeks/Nikhil"
+  
+        # # Getting the list of directories
+        # dir = os.listdir(path)
+        
+        # # Checking if the list is empty or not
+        # if len(dir) == 0:
+        #     print("Empty directory")
+        # else:
+        #     print("Not empty directory")
+            
+        location = "D:\Django Traineeship\PhotoAlbum\media"
+  
+# Path
+        path = os.path.join(location,str(id),image_name)
+        print(path)
+        if os.path.exists(path):
+            os.remove(path)
+        else:
+            print("The file does not exist")
+        # os.remove(image_name)
+        return redirect("/home/")
+
+
+    # def post(self, request, *args, **kwargs):
+    #     # image_name = self.kwargs.get('name')
+    #     # print(image_name)
+    #     return redirect("/home/")
+
+
 
