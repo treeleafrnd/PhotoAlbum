@@ -44,6 +44,9 @@ Home Page
 
                 <div class="gallery-image" id="image-{{image.id}}">
                     <button onclick="editTitle(`{{image.id}}`)" class="btn btn-primary">Update title</button>
+                    <form action="{%url 'app:delete_album' image.id%}">
+                        <button type="submit" class="btn btn-primary">Delete</button>
+                    </form>
                     {{image.title}}
                     {% for key, value in image_collection.items%}
                         {% if key == image.id %}

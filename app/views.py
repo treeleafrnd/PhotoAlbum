@@ -4,7 +4,7 @@ from django.views import View
 from django.core.exceptions import ValidationError
 from .models import Gallery
 from django.core.files.storage import FileSystemStorage
-import json, os
+import json, os, shutil
 import magic
 from django.conf import settings
 headers = {'content_type': 'application/json'}
@@ -129,4 +129,17 @@ class deleteImage(View):
     #     return redirect("/home/")
 
 
+class deleteAlbum(View):
+    def get(self, request, *args, **kwargs):
+        id = self.kwargs.get('id')
+        Gallery.objects.get(id = id).delete()
+        location = "D:\Django Traineeship\PhotoAlbum\media"
+        path = os.path.join(location,str(id))
+        print(path)
+        
+        if os.path.exists(path):
+            shutil.rmtree(path)
+        else:
+            print("The file does not exist")
+        return redirect("/home")
 
