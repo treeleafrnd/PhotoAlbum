@@ -4,8 +4,11 @@ from django.views import View
 from django.core.exceptions import ValidationError
 from .models import Gallery
 from django.core.files.storage import FileSystemStorage
-import json, os, shutil
+import json, os, shutil, urllib.request
+from os.path import basename
 import magic
+from zipfile import ZipFile, ZIP_DEFLATED
+import pathlib
 from django.conf import settings
 headers = {'content_type': 'application/json'}
 
@@ -98,17 +101,6 @@ class deleteImage(View):
         id = self.kwargs.get('id')
         image_name = self.kwargs.get('name')
         print(image_name)
-
-        # path = "D:/Pycharm projects/GeeksforGeeks/Nikhil"
-  
-        # # Getting the list of directories
-        # dir = os.listdir(path)
-        
-        # # Checking if the list is empty or not
-        # if len(dir) == 0:
-        #     print("Empty directory")
-        # else:
-        #     print("Not empty directory")
             
         location = "D:\Django Traineeship\PhotoAlbum\media"
   
@@ -143,7 +135,20 @@ class deleteAlbum(View):
             print("The file does not exist")
         return redirect("/home")
     
-class downloadImage(View):
+class downloadAlbum(View):
     def get(self, request, *args, **kwargs):
+        id = self.kwargs.get('id')
+        location = "D:\Django Traineeship\PhotoAlbum\media"
+      
+        path = os.path.join(location,str(id))
+        directory_to_zip = path
+        zip_path = './'+str(id)+'.zip'
+        folder = pathlib.Path(directory_to_zip)
+        
+        with ZipFile(zip_path, 'w', ZIP_DEFLATED) as zip:
+            for file in folder.iterdir():
+                zip.write(file, arcname=file.name)
+        # testfile = urllib.URLopener()
+        # urllib.request.urlretrieve(str(id)+".zip", str(id)+".zip")
         return redirect("/home")
 

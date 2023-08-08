@@ -3,13 +3,31 @@ function updateMessage() {
 }
 
 function preview(event) {
+  var filesToUpload = []; // Array to store files
   var elems = document.getElementById("id_images");
+  var elemsBackup = elems;
+  // console.log(typeof elems);
+
+  console.log(elems.value);
   var x = elems.files.length;
-  // initialize array
   var arr = [];
+  // initialize array
+  var array_of_images_name = [];
+  for (i = 0; i < elems.files.length; i++) {
+    let myFile = elems.files[i].name;
+    let myFileID = "FID" + (1000 + Math.random() * 9000).toFixed(0);
 
-  // append new value to the array
-
+    filesToUpload.push({
+      file: myFile,
+      FID: myFileID,
+    });
+    var file = elems.files[i];
+    var filename = file.name;
+    array_of_images_name.push(filename);
+  }
+  console.log(filesToUpload);
+  // append new value to the array  inputFile.value = "";
+  var filesToUpload = []; // Array to store files
   var mainDiv = document.getElementById("image-preview");
   for (i = 0; i < elems.files.length; i++) {
     var file = elems.files[i];
@@ -35,9 +53,10 @@ function preview(event) {
     imageDiv.append(button);
     image1 = document.getElementById("img-" + i);
     console.log(image1);
-    // console.log("img-" + i);
-    // j = button.id;
-    console.log(i, 112341);
+    // button.addEventListener("click", function () {
+    //   var image_to_delete = document.getElementById("img-" + i);
+    //   mainDiv.removeChild(image_to_delete);
+    // });
     button.onclick = function removeImage(i) {
       console.log(i, 7, 8);
       var image_to_delete = document.getElementById(
@@ -45,21 +64,26 @@ function preview(event) {
       );
       console.log(image_to_delete);
       mainDiv.removeChild(image_to_delete);
+      // for (i = 0; i < elems.files.length; i++) {
+      // document.getElementById("myText").value = "Johnny Bravo";
+      elems.files[i.srcElement.firstChild.parentNode.id].name = null;
       console.log(i.srcElement.firstChild.parentNode.id);
+      array_of_images_name.pop(i.srcElement.firstChild.parentNode.id);
+      console.log(array_of_images_name);
     };
-
-    // button.onclick = () => {
-
-    // };
-
-    // imageDiv.remove(image);
-    // b.onclick = function() { alert('OnClick'); }
   }
 }
 
-// function removeImage(x) {
-//   console.log(x);
-// }
+const initUpload = () => {
+  console.log(filesToUpload);
+
+  let formData = new FormData();
+
+  for (let i = 0; i < filesToUpload.length; i++) {
+    formData.append("files", filesToUpload[i].file);
+  }
+};
+
 var inputFile = document.getElementById("brand_logo");
 removeImg = () => {
   document.getElementById("frame").setAttribute("src", "");

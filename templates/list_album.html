@@ -33,7 +33,9 @@ Home Page
                         <form action="{%url 'app:delete_image' image.id element%}">
                             <button type="submit">Delete</button>
                         </form>
-                        <a href="{{object.image.url}} download">Download this image!</a>
+                        {{element}}
+                        <a href="../media/{{image.id}}/{{element}}" download="{{element}}">Download this image!</a>
+
                         {%endfor%}
                         {%endif%}
                     {% endfor %}
@@ -48,6 +50,16 @@ Home Page
                     <form action="{%url 'app:delete_album' image.id%}">
                         <button type="submit" class="btn btn-primary">Delete</button>
                     </form>
+                    <a href="../media/72.zip" download="72.zip">Download Album</a>
+                    <!-- <form action="{%url 'app:download_album' image.id%}">
+                                                                                                        {{image.id}}.zip
+                                                                                                        <button type="submit" class="btn btn-secondary">
+                                                                                
+                                                                                                            <a href="../72.zip" download>Download Album</a>
+                                                                                                        </button>
+                                                                                                    </form> -->
+                    <!-- <a href="{%url 'app:download_album' image.id%}" download>Download Album</a> -->
+
                     {{image.title}}
                     {% for key, value in image_collection.items%}
                         {% if key == image.id %}
