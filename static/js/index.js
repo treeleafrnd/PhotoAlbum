@@ -3,18 +3,48 @@ function updateMessage() {
 }
 
 function preview(event) {
-  console.log("Hi");
   var elems = document.getElementById("id_images");
   var x = elems.files.length;
-  console.log(x);
-  for (i = 0; i < elems.files.length; i++) {
-    // frame.src = URL.createObjectURL(event.target.files[i]);
-    var urls = URL.createObjectURL(event.target.files[i]);
-    console.log(urls);
-    document.getElementById("galeria").innerHTML += '<img src="' + urls + '">';
-  }
+  // initialize array
+  var arr = [];
 
-  document.getElementById("i").setAttribute("src", "democlass");
+  // append new value to the array
+
+  console.log(x);
+  var mainDiv = document.getElementById("image-preview");
+  for (i = 0; i < elems.files.length; i++) {
+    var file = elems.files[i];
+    var filename = file.name;
+    arr.push("filename");
+    var imageDiv = document.createElement("div");
+    imageDiv.innerText = filename;
+    imageDiv.id = "img-" + i;
+    var image = document.createElement("img");
+    var url = URL.createObjectURL(event.target.files[i]);
+    console.log(url);
+    image.src = url;
+    image.style.width = "200px";
+    image.style.height = "80px";
+    mainDiv.append(imageDiv);
+    imageDiv.append(image);
+    var button =
+      "<button class='btn btn-primary' onclick = removeImage(" +
+      i +
+      ")>Close</button>";
+    // var button = document.createElement("button");
+    // button.className = "btn btn-primary";
+
+    // button.innerHTML = "Close";
+    // button.id = i;
+    // button.onclick = () => {
+
+    // };
+
+    imageDiv.innerHTML(button);
+
+    // imageDiv.remove(image);
+    // b.onclick = function() { alert('OnClick'); }
+  }
 }
 
 var inputFile = document.getElementById("brand_logo");

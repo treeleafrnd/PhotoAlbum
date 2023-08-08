@@ -33,6 +33,7 @@ Home Page
                         <form action="{%url 'app:delete_image' image.id element%}">
                             <button type="submit">Delete</button>
                         </form>
+                        <a href="{{object.image.url}} download">Download this image!</a>
                         {%endfor%}
                         {%endif%}
                     {% endfor %}

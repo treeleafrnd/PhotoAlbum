@@ -142,4 +142,8 @@ class deleteAlbum(View):
         else:
             print("The file does not exist")
         return redirect("/home")
+    
+class downloadImage(View):
+    def get(self, request, *args, **kwargs):
+        return redirect("/home")
 
