@@ -1,41 +1,22 @@
 function updateMessage() {
   alert("Database Updated!");
 }
-let files = [];
 
 function preview(event) {
-  var filesToUpload = []; // Array to store files
+  let files = [];
   var elemsBackup = document.getElementById("id_images");
   var elems = elemsBackup;
-  // console.log(typeof elems);
 
-  console.log(elems.value);
-  var x = elems.files.length;
-  var arr = [];
-  // initialize array
-  var array_of_images_name = [];
   for (i = 0; i < elems.files.length; i++) {
     files.push(elems.files[i]);
-    let myFile = elems.files[i].name;
-    let myFileID = "FID" + (1000 + Math.random() * 9000).toFixed(0);
-
-    filesToUpload.push({
-      file: myFile,
-      FID: myFileID,
-    });
-    var file = elems.files[i];
-    var filename = file.name;
-    array_of_images_name.push(filename);
   }
-  console.log(filesToUpload);
-  // append new value to the array  inputFile.value = "";
-  var filesToUpload = []; // Array to store files
+
+  // Dynamic DOM Manipulation
   var mainDiv = document.getElementById("image-preview");
   for (i = 0; i < elems.files.length; i++) {
     let dataTransfer = new DataTransfer();
     var file = elems.files[i];
     var filename = file.name;
-    arr.push("filename");
     var imageDiv = document.createElement("div");
     imageDiv.innerText = filename;
     imageDiv.id = "img-" + i;
@@ -53,16 +34,16 @@ function preview(event) {
     button.className = "btn btn-secondary";
     button.id = i;
     imageDiv.append(button);
-    image1 = document.getElementById("img-" + i);
-    // console.log(image1);
+    // End of DOM Manipulation
 
+    // Button Onclick
     button.onclick = function removeImage(i) {
       var image_to_delete = document.getElementById(
         "img-" + i.srcElement.firstChild.parentNode.id
       );
-      console.log(image_to_delete);
+      // console.log(image_to_delete);
       mainDiv.removeChild(image_to_delete);
-      console.log(elems.files[i.srcElement.firstChild.parentNode.id].name);
+      // console.log(elems.files[i.srcElement.firstChild.parentNode.id].name);
       const idxObj = files.findIndex((object) => {
         return (
           object.name ===
@@ -71,7 +52,7 @@ function preview(event) {
       });
 
       files.splice(idxObj, 1);
-      // console.log(files);
+      console.log(files);
       for (let i = 0; i < files.length; i++) {
         if (dataTransfer[i] === files[i].name) {
           r = 0;
