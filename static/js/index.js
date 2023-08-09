@@ -41,13 +41,17 @@ function preview(event) {
       var image_to_delete = document.getElementById(
         "img-" + i.srcElement.firstChild.parentNode.id
       );
+      x = document
+        .getElementById("img-" + i.srcElement.firstChild.parentNode.id)
+        .innerText.slice(0, -5);
+      console.log(x);
       // console.log(image_to_delete);
       mainDiv.removeChild(image_to_delete);
+
       // console.log(elems.files[i.srcElement.firstChild.parentNode.id].name);
       const idxObj = files.findIndex((object) => {
         return (
-          object.name ===
-          elems.files[i.srcElement.firstChild.parentNode.id].name
+          object.name === x
         );
       });
 
