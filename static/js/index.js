@@ -1,11 +1,12 @@
 function updateMessage() {
   alert("Database Updated!");
 }
+let files = [];
 
 function preview(event) {
   var filesToUpload = []; // Array to store files
-  var elems = document.getElementById("id_images");
-  var elemsBackup = elems;
+  var elemsBackup = document.getElementById("id_images");
+  var elems = elemsBackup;
   // console.log(typeof elems);
 
   console.log(elems.value);
@@ -14,6 +15,7 @@ function preview(event) {
   // initialize array
   var array_of_images_name = [];
   for (i = 0; i < elems.files.length; i++) {
+    files.push(elems.files[i]);
     let myFile = elems.files[i].name;
     let myFileID = "FID" + (1000 + Math.random() * 9000).toFixed(0);
 
@@ -30,6 +32,7 @@ function preview(event) {
   var filesToUpload = []; // Array to store files
   var mainDiv = document.getElementById("image-preview");
   for (i = 0; i < elems.files.length; i++) {
+    let dataTransfer = new DataTransfer();
     var file = elems.files[i];
     var filename = file.name;
     arr.push("filename");
@@ -38,7 +41,6 @@ function preview(event) {
     imageDiv.id = "img-" + i;
     var image = document.createElement("img");
     var url = URL.createObjectURL(event.target.files[i]);
-    // console.log(url);
     image.src = url;
     image.style.width = "200px";
     image.style.height = "80px";
@@ -52,24 +54,33 @@ function preview(event) {
     button.id = i;
     imageDiv.append(button);
     image1 = document.getElementById("img-" + i);
-    console.log(image1);
-    // button.addEventListener("click", function () {
-    //   var image_to_delete = document.getElementById("img-" + i);
-    //   mainDiv.removeChild(image_to_delete);
-    // });
+    // console.log(image1);
+
     button.onclick = function removeImage(i) {
-      console.log(i, 7, 8);
       var image_to_delete = document.getElementById(
         "img-" + i.srcElement.firstChild.parentNode.id
       );
       console.log(image_to_delete);
       mainDiv.removeChild(image_to_delete);
-      // for (i = 0; i < elems.files.length; i++) {
-      // document.getElementById("myText").value = "Johnny Bravo";
-      elems.files[i.srcElement.firstChild.parentNode.id].name = null;
-      console.log(i.srcElement.firstChild.parentNode.id);
-      array_of_images_name.pop(i.srcElement.firstChild.parentNode.id);
-      console.log(array_of_images_name);
+      console.log(elems.files[i.srcElement.firstChild.parentNode.id].name);
+      const idxObj = files.findIndex((object) => {
+        return (
+          object.name ===
+          elems.files[i.srcElement.firstChild.parentNode.id].name
+        );
+      });
+
+      files.splice(idxObj, 1);
+      // console.log(files);
+      for (let i = 0; i < files.length; i++) {
+        if (dataTransfer[i] === files[i].name) {
+          r = 0;
+        }
+        dataTransfer.items.add(files[i]);
+      }
+
+      console.log(dataTransfer);
+      elemsBackup.files = dataTransfer.files;
     };
   }
 }

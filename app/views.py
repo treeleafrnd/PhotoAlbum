@@ -142,7 +142,7 @@ class downloadAlbum(View):
       
         path = os.path.join(location,str(id))
         directory_to_zip = path
-        zip_path = './'+str(id)+'.zip'
+        zip_path = str(id)+'.zip'
         folder = pathlib.Path(directory_to_zip)
         
         with ZipFile(zip_path, 'w', ZIP_DEFLATED) as zip:
