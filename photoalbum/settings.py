@@ -15,7 +15,9 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+# BASE_DIR1 = BASE_DIR.parent.parent
+# print(BASE_DIR)
+# print(BASE_DIR1)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -26,7 +28,7 @@ SECRET_KEY = 'django-insecure-(imcvg_nm*@%snfzb#00i-)ifqegy490(2ql4c#7gaf+u0yc4m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -65,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -115,7 +118,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files (CSS, JavaSczript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
@@ -123,8 +126,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = 'media/'  # D:\media\photoalbum\103
+# MEDIA_URL = os.path.join(BASE_DIR.parent.parent, 'media', 'photoalbum/')
+# print(MEDIA_URL)
+MEDIA_ROOT = os.path.join(BASE_DIR.parent.parent, 'media', 'photoalbum')
+print(MEDIA_ROOT)
 
 
 # Default primary key field type

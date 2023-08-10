@@ -47,17 +47,13 @@ class AddTitleView(View):
         if checker == True:
             new_album.save()
             a = Gallery.objects.latest('id')
-            print(a.id)
-        
-
 
             for file in files:
-                fs = FileSystemStorage(location='media/' + str(a.id))
+                # image_folder = os.path.join(settings.MEDIA_ROOT, str(a.id))
+                fs = FileSystemStorage(os.path.join(settings.MEDIA_ROOT, str(a.id)))
                 file_name = fs.save(file.name, file)
  
         return redirect("/home/")
-
-#         return render(request, 'home.html',)
 
 class Home(View):
     def get(self, request):
@@ -70,10 +66,11 @@ class ListAlbum(View):
         image_collection = {}
         for element in all_images:
             image_folder = os.path.join(settings.MEDIA_ROOT, str(element.id))  
-            # print(image_folder)
+            print(image_folder)
             image_files = []
 
             for filename in os.listdir(image_folder):
+                # print(filename)
                 image_files.append(filename)
                 
             image_collection[element.id] = image_files
@@ -100,9 +97,9 @@ class deleteImage(View):
     def get(self, request, *args, **kwargs):
         id = self.kwargs.get('id')
         image_name = self.kwargs.get('name')
-        print(image_name)
+        # print(image_name)
             
-        location = "D:\Django Traineeship\PhotoAlbum\media"
+        location = os.path.join(settings.MEDIA_ROOT)
   
 # Path
         path = os.path.join(location,str(id),image_name)
@@ -113,32 +110,25 @@ class deleteImage(View):
             print("The file does not exist")
         # os.remove(image_name)
         return redirect("/home/")
-
-
-    # def post(self, request, *args, **kwargs):
-    #     # image_name = self.kwargs.get('name')
-    #     # print(image_name)
-    #     return redirect("/home/")
-
-
+    
 class deleteAlbum(View):
     def get(self, request, *args, **kwargs):
         id = self.kwargs.get('id')
         Gallery.objects.get(id = id).delete()
-        location = "D:\Django Traineeship\PhotoAlbum\media"
+        location = os.path.join(settings.MEDIA_ROOT)
         path = os.path.join(location,str(id))
         print(path)
         
         if os.path.exists(path):
             shutil.rmtree(path)
         else:
-            print("The file does not exist")
+            print("The file does not exist!")
         return redirect("/home")
     
 class downloadAlbum(View):
     def get(self, request, *args, **kwargs):
         id = self.kwargs.get('id')
-        location = "D:\Django Traineeship\PhotoAlbum\media"
+        location = os.path.join(settings.MEDIA_ROOT)
       
         path = os.path.join(location,str(id))
         directory_to_zip = path
@@ -148,7 +138,5 @@ class downloadAlbum(View):
         with ZipFile(zip_path, 'w', ZIP_DEFLATED) as zip:
             for file in folder.iterdir():
                 zip.write(file, arcname=file.name)
-        # testfile = urllib.URLopener()
-        # urllib.request.urlretrieve(str(id)+".zip", str(id)+".zip")
         return redirect("/home")
 

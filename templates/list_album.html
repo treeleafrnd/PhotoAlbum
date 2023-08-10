@@ -26,7 +26,7 @@
                     <p>pop up box</p>
                     {% for element in value %}
                         <img
-                            src="http://localhost:8000/media/{{ image.id }}/{{ element }}" style="height: 75px;width: 75px;" alt="">
+                            src="http://localhost:8000/{{ MEDIA_URL }}/{{ image.id }}/{{ element }}" style="height: 75px;width: 75px;" alt="">
                             <!-- <i class="glyphicon glyphicon-remove"></i> -->
 
 
@@ -53,26 +53,23 @@
 
 
                 <form action="{% url 'app:download_album' image.id %}">
-                    <button type="submit" class="btn btn-primary">
-                        Download Album
-                    </button>
-                </form>
+                    <a
+                        href="../{{ image.id }}.zip" download="{{ image.id }}.zip">
+                        <!-- <a href="..../" download="{{ image.id }}.zip"> -->
 
-                <!-- <form action="{%url 'app:download_album' image.id%}">
-                                                                                                                                                                                                                            {{image.id}}.zip
-                                                                                                                                                                                                                            <button type="submit" class="btn btn-secondary">
-                                                                                                                                                                                                    
-                                                                                                                                                                                                                                <a href="../72.zip" download>Download Album</a>
-                                                                                                                                                                                                                            </button>
-                                                                                                                                                                                                                        </form> -->
-                <!-- <a href="{%url 'app:download_album' image.id%}" download>Download Album</a> -->
+                        <button type="submit" class="btn btn-primary">
+
+                            Download Album
+                        </button>
+                    </a>
+                </form>
 
                 {{ image.title }}
                 {% for key, value in image_collection.items %}
                     {% if key == image.id %}
 
                         <!-- http://localhost:8000/media/{{image.id}}/{{element}} -->
-                        <img src="http://localhost:8000/media/{{ image.id }}/{{ value.0 }}" style="height: 75px;width: 75px;" alt="" onclick="popup(`{{ image.id }}`)">
+                        <img src="http://localhost:8000/{{ MEDIA_URL }}/{{ image.id }}/{{ value.0 }}" style="height: 75px;width: 75px;" alt="" onclick="popup(`{{ image.id }}`)">
 
                         {% endif %}
                     {% endfor %}
