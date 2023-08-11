@@ -126,10 +126,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-MEDIA_URL = 'media/'  # D:\media\photoalbum\103
+MEDIA_URL = 'yyy/' 
 # MEDIA_URL = os.path.join(BASE_DIR.parent.parent, 'media', 'photoalbum/')
 # print(MEDIA_URL)
-MEDIA_ROOT = os.path.join(BASE_DIR.parent.parent, 'media', 'photoalbum')
+# MEDIA_ROOT = os.path.join(BASE_DIR.parent.parent, 'media', 'photoalbum') 
+MEDIA_ROOT = BASE_DIR / '../../media/photoalbum'
 print(MEDIA_ROOT)
 
 

@@ -26,7 +26,7 @@
                     <p>pop up box</p>
                     {% for element in value %}
                         <img
-                            src="http://localhost:8000/{{ MEDIA_URL }}/{{ image.id }}/{{ element }}" style="height: 75px;width: 75px;" alt="">
+                            src="{{ MEDIA_URL }}/{{ image.id }}/{{ element }}" style="height: 75px;width: 75px;" alt="">
                             <!-- <i class="glyphicon glyphicon-remove"></i> -->
 
 
@@ -34,7 +34,7 @@
                                 <button type="submit">Delete</button>
                             </form>
                             {{ element }}
-                            <a href="../media/{{ image.id }}/{{ element }}" download="{{ element }}">Download this image!</a>
+                            <a href="{{ MEDIA_URL }}/{{ image.id }}/{{ element }}" download="{{ element }}">Download this image!</a>
 
                         {% endfor %}
                     {% endif %}
