@@ -6,7 +6,11 @@ from django.conf.urls.static import static
 app_name = 'app'
 
 urlpatterns = [
-    path('', views.Home.as_view(), name = 'home'),
+    # path('', views.Home.as_view(), name = 'home'),
+    path('', views.htmltopdf, name='pdf_file'),
+    # path('download/pdf/', views.downloadpdf, name='downloadpdf'),
+    # path('', views.send_file, name='send_file'),
+    
     path('home/', views.Home.as_view(), name = 'home'),
     path('AddTitleView/', views.AddTitleView.as_view(), name = 'AddTitleView'),
     path('list/album', views.ListAlbum.as_view(), name = 'list'),

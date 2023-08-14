@@ -1,16 +1,21 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, FileResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
 from django.core.exceptions import ValidationError
 from .models import Gallery
 from django.core.files.storage import FileSystemStorage
-import json, os, shutil, urllib.request
+import json, os, shutil, urllib.request, tempfile, zipfile
 from os.path import basename
-import magic
+from wsgiref.util import FileWrapper
+import magic,io,datetime
 from zipfile import ZipFile, ZIP_DEFLATED
 import pathlib
+import js2py
 from django.conf import settings
+from .pdf import html2pdf
 headers = {'content_type': 'application/json'}
+
+# js2py.eval_js('console.log("Hello World!")')
 
 class AddTitleView(View):
     def get(self, request):
@@ -125,6 +130,77 @@ class deleteAlbum(View):
             print("The file does not exist!")
         return redirect("/home")
     
+class downloadAlbum1(View):
+    def get(self, request, *args, **kwargs):
+        id = self.kwargs.get('id')
+        location = os.path.join(settings.MEDIA_ROOT)
+      
+        path = os.path.join(location,str(id))
+        directory_to_zip = path
+        # zip_path = str(id)+'.zip'
+        folder = pathlib.Path(path)
+        print(path)
+        temp = tempfile.TemporaryFile()
+        archive = zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED)
+        for file in folder.iterdir():
+            archive.write(file, arcname=file.name)
+            print(f"Adding file: {file.name} as {file.name}")
+      
+        wrapper = FileWrapper(temp)
+        response = HttpResponse(wrapper, content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename=test.zip'
+        return response
+        
+        # with ZipFile(zip_path, 'w', ZIP_DEFLATED) as zip:
+        #     for file in folder.iterdir():
+        #         zip.write(file, arcname=file.name)
+
+        # img = open(str(id)+'.zip', 'rb')
+
+        # response = FileResponse(img)
+        # return FileResponse(img, as_attachment=True, filename="Export.zip")
+
+
+def send_file(response):
+
+    img = open('112.zip', 'rb')
+
+    response = FileResponse(img)
+
+    return FileResponse(img, as_attachment=True, filename="Export.zip")
+
+
+# def export_pdf(request: object, context: object, template: object) -> object:
+#     response = HttpResponse(content_type="application/pdf")
+#     response["Content-Disposition"] = (
+#         "inline; attachment; filename=identeq-face-"
+#         + context["file_name"]
+#         + str(datetime.datetime.now())
+#         + ".pdf"
+#     )
+#     response["Content-Trasnfer-Encoding"] = "binary"
+#     html_string = render_to_string(template, context=context)
+#     html = HTML(string=html_string, base_url=request.build_absolute_uri())
+#     result = html.write_pdf()
+
+
+#     with tempfile.NamedTemporaryFile(delete=True) as output:
+#         output.write(result)
+#         output.flush()
+#         output = open(output.name, "rb")
+#         response.write(output.read())
+#     return response
+
+def htmltopdf(request):
+    print("Hi")
+    return render(request,'pdf.html')
+# def downloadpdf(request):
+#     print("Hi")
+#     pdf = html2pdf('downloadpdf.html')
+#     return HttpResponse(pdf, content_type="application/pdf")
+
+
+
 class downloadAlbum(View):
     def get(self, request, *args, **kwargs):
         id = self.kwargs.get('id')
@@ -132,11 +208,27 @@ class downloadAlbum(View):
       
         path = os.path.join(location,str(id))
         directory_to_zip = path
-        zip_path = str(id)+'.zip'
-        folder = pathlib.Path(directory_to_zip)
-        
-        with ZipFile(zip_path, 'w', ZIP_DEFLATED) as zip:
-            for file in folder.iterdir():
-                zip.write(file, arcname=file.name)
-        return redirect("/home")
+        # zip_path = str(id)+'.zip'
+        image_folder = pathlib.Path(path)
+    # Specify the folder path containing images
+        # image_folder = '/path/to/your/image/folder/'
 
+        # Create an in-memory byte stream to store the zip file
+        zip_stream = io.BytesIO()
+
+        # Create a ZipFile object with the in-memory byte stream
+        with zipfile.ZipFile(zip_stream, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            # Loop through image files in the folder
+            for root, _, files in os.walk(image_folder):
+                for file in files:
+                    if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+                        image_path = os.path.join(root, file)
+                        with open(image_path, 'rb') as image_file:
+                            # Add image to the zip
+                            zipf.writestr(file, image_file.read())
+
+        # Set up the HttpResponse with appropriate headers
+        response = HttpResponse(zip_stream.getvalue(), content_type='application/zip')
+        response['Content-Disposition'] = f'attachment; filename="image_files.zip"'
+
+        return response

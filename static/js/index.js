@@ -2,6 +2,8 @@ function updateMessage() {
   alert("Database Updated!");
 }
 
+list_of_files = [];
+
 function preview(event) {
   let files = [];
   var elemsBackup = document.getElementById("id_images");
@@ -50,9 +52,7 @@ function preview(event) {
 
       // console.log(elems.files[i.srcElement.firstChild.parentNode.id].name);
       const idxObj = files.findIndex((object) => {
-        return (
-          object.name === x
-        );
+        return object.name === x;
       });
 
       files.splice(idxObj, 1);
@@ -68,6 +68,19 @@ function preview(event) {
       elemsBackup.files = dataTransfer.files;
     };
   }
+}
+
+function downloadZip(i) {
+  let zip = new JSZip();
+  let files = document.getElementById("files-files");
+  console.log(files);
+
+  Array.from(files.files).forEach((f, i) => {
+    zip.file(f.name, f);
+  });
+  zip.generateAsync({ type: "blob" }).then((content) => {
+    saveAs(content, "output.zip");
+  });
 }
 
 const initUpload = () => {

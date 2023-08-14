@@ -1,13 +1,24 @@
 {% extends 'base.html' %}
 {% block title %}Home Page
-{%endblock %}
-{%block body%}
-    {% load static %}
-    <p>Home Page</p>
-    <form action="{% url 'app:AddTitleView' %}">
-        <button type="submit">Add Album</button>
-    </form>
-    <form action="{% url 'app:list' %}">
-        <button type="submit">View List</button>
-    </form>
 {% endblock %}
+{% block body %}
+    {% load static %}
+    <div class="float-container">
+
+        <div class="float-child">
+            <img style="width: 450px; height: 370px; margin: 50px;" alt="Photo Album Image" src="{% static 'images/photo-album.png' %}"/>
+        </div>
+
+        <div class="float-child">
+            <div style="margin-top: 50px;">
+
+                <h5>"Moments Frozen in Time,
+                </h5>
+                <h2>A Journey Through Memories"</h2>
+                Every photograph captures a fragment of life, a fleeting moment that tells a story, stirs emotions, and preserves memories that may otherwise fade away. In this enchanting photo album, we invite you to embark on a visual odyssey through the chapters of our lives. Each page holds a unique tale, a snapshot of joy, love, adventure, and connection. Join us as we rewind the threads of time, reliving cherished memories and celebrating the beauty of the human experience.
+                <br>Welcome to a collection that speaks not only of the past, but also of the enduring magic that resides within each captured image.
+                </div>
+
+            </div>
+        </div>
+    {% endblock %}
