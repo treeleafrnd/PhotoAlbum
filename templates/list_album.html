@@ -21,32 +21,32 @@
                             <label for="images" class="col-sm-2 col-form-label">Images</label>
                             <input type="file" name="images" accept="image/*" class="form-control" id="images" multiple onchange="previewAddedImage(event)"/>
                             <div class="image-added-preview" id="image-added-preview"></div>
-                            <button class="btn btn-primary btn-sm" type="submit" style="margin-top: 15px;">
+                            <button class="btn btn-primary btn-sm" type="submit" style="margin-top: 15px; margin: 5px;">
                                 <i class="fa-regular fa-square-check"></i>
                                 Update</button>
-
-
+                            <button onclick="closeEditTitle(`{{ image.id }}`)" class="btn btn-secondary btn-sm" style="margin-top: 15px; margin: 5px;">
+                                <i class="fa-regular fa-circle-xmark"></i>
+                                Close</button>
                         </div>
                     </form>
-                    <button onclick="" class="btn btn-secondary btn-sm">
-                        <i class="fa-regular fa-circle-xmark"></i>
-                        Close</button>
+
 
                     {% for key, value in image_collection.items %}
                         {% if key == image.id %}
+                            <div class="row">
+                                {% for element in value %}
+                                    <img src="{{ MEDIA_URL }}/{{ image.id }}/{{ element }}" style="height: 1%;width: 20%;display: flex;" alt="">
+                                        <h6>{{ element }}</h6>
+                                        <form action="{% url 'app:delete_image' image.id element %}">
 
-                            {% for element in value %}
-                                <img src="{{ MEDIA_URL }}/{{ image.id }}/{{ element }}" style="height: 150px;width: 250px;display: flex;" alt="">
-                                    <h6>{{ element }}</h6>
-                                    <form action="{% url 'app:delete_image' image.id element %}">
+                                            <button class="btn btn-danger btn-sm" type="submit">
+                                                <i class="fa fa-trash"></i>
 
-                                        <button class="btn btn-danger btn-sm" type="submit">
-                                            <i class="fa fa-trash"></i>
+                                                Delete</button>
+                                        </form>
 
-                                            Delete</button>
-                                    </form>
-
-                                {% endfor %}
+                                    {% endfor %}
+                                </div>
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -54,7 +54,7 @@
 
                 <!-- Pop Up Box -->
                 <div class="popup" id="popup-{{ image.id }}">
-                    <div class="card popup-box" style="width: 25%;margin-left: auto; margin-right: auto; padding: 20px;">
+                    <div class="card popup-box" style="margin-left: auto; margin-right: auto; padding: 20px;">
                         <span class="close" style="font-size: 1.5rem;">
                             <a onclick="closePopUp(`{{ image.id }}`)">&times;</a>
                         </span>
@@ -63,7 +63,7 @@
                             {% if key == image.id %}
 
                                 {% for element in value %}
-                                    <img src="{{ MEDIA_URL }}/{{ image.id }}/{{ element }}" style="height: 150px;width: 60%;margin-left: auto; margin-right: auto;display: flex;" alt="">
+                                    <img src="{{ MEDIA_URL }}/{{ image.id }}/{{ element }}" style="height: 150px;width: 200px;margin-left: auto; margin-right: auto;display: flex;" alt="">
 
                                         <div class="row">
                                             <h6 style="margin: 10px;">{{ element }}</h6>
@@ -103,7 +103,6 @@
                                             <button onclick="editTitle(`{{ image.id }}`)" class="btn btn-info btn-sm" style="margin: 4px; ">
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </i>Edit</button>
-
                                         <form action="{% url 'app:download_album' image.id %}">
                                             <button class="btn btn-primary btn-sm" type="submit" style="margin: 4px;">
                                                 <i class="fa-solid fa-download"></i>
