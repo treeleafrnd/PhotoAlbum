@@ -185,3 +185,10 @@ function closeEditTitle(x) {
   console.log("title update popup closed");
   console.log(x);
 }
+// var modal = document.getElementById("edit-title-{{ image.id }}");
+
+// window.onclick = function (event) {
+//   if (event.target == modal) {
+//     modal.style.display = "none";
+//   }
+// };

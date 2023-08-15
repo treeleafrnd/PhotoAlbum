@@ -6,14 +6,14 @@ from django.conf.urls.static import static
 app_name = 'app'
 
 urlpatterns = [
-    # path('', views.Home.as_view(), name = 'home'),
-    path('', views.htmltopdf, name='pdf_file'),
+    path('', views.Home.as_view(), name = 'home'),
+    # path('', views.htmltopdf, name='pdf_file/'),
     # path('download/pdf/', views.downloadpdf, name='downloadpdf'),
     # path('', views.send_file, name='send_file'),
     
     path('home/', views.Home.as_view(), name = 'home'),
-    path('AddTitleView/', views.AddTitleView.as_view(), name = 'AddTitleView'),
-    path('list/album', views.ListAlbum.as_view(), name = 'list'),
+    path('add/album/', views.AddAlbum.as_view(), name = 'add_album'),
+    path('list/album/', views.ListAlbum.as_view(), name = 'list'),
     path('update/title/<int:id>/',views.updateTitle.as_view(), name='update_title'),
     path('delete/album/<int:id>/',views.deleteAlbum.as_view(), name='delete_album'),
     path('download/album/<int:id>/',views.downloadAlbum.as_view(), name='download_album'),

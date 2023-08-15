@@ -17,7 +17,7 @@ headers = {'content_type': 'application/json'}
 
 # js2py.eval_js('console.log("Hello World!")')
 
-class AddTitleView(View):
+class AddAlbum(View):
     def get(self, request):
         return render(request, 'form.html',)
     
@@ -58,7 +58,7 @@ class AddTitleView(View):
                 fs = FileSystemStorage(os.path.join(settings.MEDIA_ROOT, str(a.id)))
                 file_name = fs.save(file.name, file)
  
-        return redirect("/home/")
+        return redirect("/add/album/")
 
 class Home(View):
     def get(self, request):
@@ -100,7 +100,7 @@ class updateTitle(View):
         for file in files:
                 fs = FileSystemStorage(os.path.join(settings.MEDIA_ROOT, str(id)))
                 file_name = fs.save(file.name, file)
-        return redirect("/home/")
+        return redirect("/list/album/")
     
 class deleteImage(View):
     def get(self, request, *args, **kwargs):
@@ -118,7 +118,7 @@ class deleteImage(View):
         else:
             print("The file does not exist")
         # os.remove(image_name)
-        return redirect("/home/")
+        return redirect("/list/album/")
     
 class deleteAlbum(View):
     def get(self, request, *args, **kwargs):
@@ -132,7 +132,7 @@ class deleteAlbum(View):
             shutil.rmtree(path)
         else:
             print("The file does not exist!")
-        return redirect("/home")
+        return redirect("/list/album/")
     
 class downloadAlbum1(View):
     def get(self, request, *args, **kwargs):
@@ -165,13 +165,13 @@ class downloadAlbum1(View):
         # return FileResponse(img, as_attachment=True, filename="Export.zip")
 
 
-def send_file(response):
+# def send_file(response):
 
-    img = open('112.zip', 'rb')
+#     img = open('112.zip', 'rb')
 
-    response = FileResponse(img)
+#     response = FileResponse(img)
 
-    return FileResponse(img, as_attachment=True, filename="Export.zip")
+#     return FileResponse(img, as_attachment=True, filename="Export.zip")
 
 
 # def export_pdf(request: object, context: object, template: object) -> object:
@@ -195,9 +195,9 @@ def send_file(response):
 #         response.write(output.read())
 #     return response
 
-def htmltopdf(request):
-    print("Hi")
-    return render(request,'pdf.html')
+# def htmltopdf(request):
+#     print("Hi")
+#     return render(request,'pdf.html')
 # def downloadpdf(request):
 #     print("Hi")
 #     pdf = html2pdf('downloadpdf.html')
@@ -226,9 +226,9 @@ class downloadAlbum(View):
                     with open(image_path, 'rb') as image_file:
                         # Add image to the zip
                         zipf.writestr(file, image_file.read())
-
+        album_name = Gallery.objects.filter(id=id)[0]
         # Set up the HttpResponse with appropriate headers
         response = HttpResponse(zip_stream.getvalue(), content_type='application/zip')
-        response['Content-Disposition'] = f'attachment; filename="image_files.zip"'
+        response['Content-Disposition'] = f'attachment; filename="{album_name.title}.zip"'
 
         return response
