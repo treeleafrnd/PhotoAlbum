@@ -8,63 +8,97 @@
     <div style="display: flex; flex-wrap: wrap">
         {% for image in album %}
             <!-- Edit Title Segment -->
-            <div class="edit-title" id="edit-title-{{ image.id }}" style="display: none;">
-                <form method="post" enctype="multipart/form-data" action="{% url 'app:update_title' image.id %}" style="display: block; margin-bottom: 10px">
-                    <div class="form-group row">
-                        {% csrf_token %}
-                        <label for="title" class="col-sm-2 col-form-label">Title</label>
-
-                        <div class="col-sm-10">
+            <div class="popup" id="edit-title-{{ image.id }}">
+                <div class="edit-title" id="edit-title-{{ image.id }}">
+                    <span class="close">
+                        <a onclick="closeEditTitle(`{{ image.id }}`)">&times;</a>
+                    </span>
+                    <form method="post" enctype="multipart/form-data" action="{% url 'app:update_title' image.id %}" style="display: block; margin-bottom: 10px; padding: 4px;">
+                        <div class="form-group row">
+                            {% csrf_token %}
+                            <label for="title" class="col-sm-2 col-form-label">Title</label>
                             <input type="text" name="title" maxlength="200" class="form-control" value="{{ image.title }}" required="" id="id_title"/>
+                            <label for="images" class="col-sm-2 col-form-label">Images</label>
+                            <input type="file" name="images" accept="image/*" class="form-control" id="images" multiple onchange="previewAddedImage(event)"/>
+                            <div class="image-added-preview" id="image-added-preview"></div>
+                            <button class="btn btn-primary" type="submit">Update</button>
+
+
                         </div>
-                        <button class="btn btn-primary" type="submit">Update</button>
-                    </div>
-                </form>
-            </div>
+                    </form>
+                    <button onclick="closeEditTitle(`{{ image.id }}`)" class="btn btn-primary" style="height: 40px; width: 100px;">Close</button>
 
-            <!-- Pop Up Box -->
-            <div class="card popup-box" id="popup-{{ image.id }}" style="width: 25%;margin-left: auto; margin-right: auto;display: none; padding: 20px;">
+                    {% for key, value in image_collection.items %}
+                        {% if key == image.id %}
 
-                {% for key, value in image_collection.items %}
-                    {% if key == image.id %}
+                            {% for element in value %}
+                                <img src="{{ MEDIA_URL }}/{{ image.id }}/{{ element }}" style="height: 150px;width: 250px;display: flex;" alt="">
+                                    <h6>{{ element }}</h6>
+                                    <form action="{% url 'app:delete_image' image.id element %}">
+                                        <button type="submit">Delete</button>
+                                    </form>
 
-                        {% for element in value %}
-                            <img src="{{ MEDIA_URL }}/{{ image.id }}/{{ element }}" style="height: 150px;width: 50%;margin-left: auto; margin-right: auto;display: flex;" alt="">
-                                <h6>{{ element }}</h6>
-                                <form action="{% url 'app:delete_image' image.id element %}">
-                                    <button type="submit">Delete</button>
-                                </form>
-                                <a href="{{ MEDIA_URL }}/{{ image.id }}/{{ element }}" download="{{ element }}">Download Image</a>
-                                <br>
                                 {% endfor %}
                             {% endif %}
                         {% endfor %}
-
-
-                        <button onclick="closePopUp(`{{ image.id }}`)" class="btn btn-primary" style="height: 40px; width: 100px;">Close</button>
-
                     </div>
+                </div>
 
-                    <!-- Display of Album List -->
+                <!-- Pop Up Box -->
+                <div class="popup" id="popup-{{ image.id }}">
+                    <div class="card popup-box" style="width: 25%;margin-left: auto; margin-right: auto; padding: 20px;">
 
-
-                    <div class="card element-box" id="image-{{ image.id }}" style="width: 18rem; height: 400px; position: relative;">
                         {% for key, value in image_collection.items %}
                             {% if key == image.id %}
-                                <img class="card-img-top" src="http://localhost:8000/{{ MEDIA_URL }}/{{ image.id }}/{{ value.0 }}" style="height: 175px;width: 100%;" alt="" onclick="popup(`{{ image.id }}`)">
-                                {% endif %}
-                            {% endfor %}
-                            <div class="card-body">
-                                <h5 class="card-title">{{ image.title }}</h5>
-                                <a href="{% url 'app:delete_album' image.id %}" class="card-link">Delete</a>
-                                <a href="#" onclick="editTitle(`{{ image.id }}`)" class="card-link">Update</a>
-                                <br>
-                                    <a href="{% url 'app:download_album' image.id %}" class="card-link">Download Album</a>
 
+                                {% for element in value %}
+                                    <img src="{{ MEDIA_URL }}/{{ image.id }}/{{ element }}" style="height: 150px;width: 50%;margin-left: auto; margin-right: auto;display: flex;" alt="">
+                                        <h6>{{ element }}</h6>
+                                        <form action="{% url 'app:delete_image' image.id element %}">
+                                            <button type="submit">Delete</button>
+                                        </form>
+                                        <a href="{{ MEDIA_URL }}/{{ image.id }}/{{ element }}" download="{{ element }}">Download Image</a>
+                                        <br>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+
+                                <button onclick="closePopUp(`{{ image.id }}`)" class="btn btn-primary" style="height: 40px; width: 100px;">Close</button>
+
+                            </div>
+                        </div>
+
+                        <!-- Display of Album List -->
+
+                        <div class="row">
+                            <div class="card element-box" id="image-{{ image.id }}" style="width: 18rem; height: 400px; position: relative;">
+                                {% for key, value in image_collection.items %}
+                                    {% if key == image.id %}
+                                        <img class="card-img-top" src="http://localhost:8000/{{ MEDIA_URL }}/{{ image.id }}/{{ value.0 }}" style="height: 175px;width: 100%;" alt="" onclick="popup(`{{ image.id }}`)">
+                                        {% endif %}
+                                    {% endfor %}
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ image.title }}</h5>
+                                        <div class="row" style=" position: absolute;bottom: 5px;right: 30px;">
+                                            <form action="{% url 'app:delete_album' image.id %}">
+                                                <button class="btn btn-danger btn-sm" type="submit" style="margin: 4px;">
+                                                    <i class="fa fa-trash"></i>
+
+                                                    Delete</button>
+                                            </form>
+                                            <button onclick="editTitle(`{{ image.id }}`)" class="btn btn-info btn-sm" style="margin: 4px; ">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </i>Edit</button>
+
+                                        <form action="{% url 'app:download_album' image.id %}">
+                                            <button class="btn btn-primary btn-sm" type="submit" style="margin: 4px;">
+                                                <i class="fa-solid fa-download"></i>
+                                                Download</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                     {% endfor %}
-
                 {% endblock %}

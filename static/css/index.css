@@ -35,14 +35,31 @@ p {
   box-sizing: border-box;
   border: 1px outset rgb(203, 232, 241);
   border-radius: 5px;
-  text-align: center;
-  margin: 4px;
+  margin: 40px;
   text-align: left;
 }
 .element-box:hover {
   box-shadow: 23px 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
+.popup {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
 .popup-box {
+  background-color: #fefefe;
+  margin: auto;
+  /* border: 1px solid #888; */
+  width: 80%;
   justify-content: space-between;
   display: block;
   padding: 20px;
@@ -50,9 +67,10 @@ p {
   box-sizing: border-box;
   border: 1px outset rgb(203, 232, 241);
   border-radius: 5px;
-  text-align: center;
-  margin: 4px;
   text-align: left;
+  margin: 40px;
+  position: relative;
+  transition: all 5s ease-in-out;
 }
 .popup-box:hover {
   box-shadow: 23px 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -70,6 +88,32 @@ p {
 }
 
 .float-three-children {
-  /* width: 25%; */
+  width: 25%;
   float: left;
+}
+
+.edit-title {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #fefefe;
+  /* border: 1px solid #888; */
+  width: 60%;
+  justify-content: space-between;
+  display: block;
+  padding: 20px;
+  /* height: 400px; */
+  box-sizing: border-box;
+  border: 1px outset rgb(203, 232, 241);
+  border-radius: 5px;
+  text-align: left;
+  margin: 40px;
+  transition: all 5s ease-in-out;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
 }

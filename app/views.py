@@ -96,6 +96,10 @@ class updateTitle(View):
         
         saveData = Gallery(id = id,title=obj.title, )
         saveData.save()
+        files = request.FILES.getlist('images')
+        for file in files:
+                fs = FileSystemStorage(os.path.join(settings.MEDIA_ROOT, str(id)))
+                file_name = fs.save(file.name, file)
         return redirect("/home/")
     
 class deleteImage(View):
@@ -199,19 +203,15 @@ def htmltopdf(request):
 #     pdf = html2pdf('downloadpdf.html')
 #     return HttpResponse(pdf, content_type="application/pdf")
 
-
-
 class downloadAlbum(View):
     def get(self, request, *args, **kwargs):
         id = self.kwargs.get('id')
         location = os.path.join(settings.MEDIA_ROOT)
       
         path = os.path.join(location,str(id))
-        directory_to_zip = path
+        # directory_to_zip = path
         # zip_path = str(id)+'.zip'
         image_folder = pathlib.Path(path)
-    # Specify the folder path containing images
-        # image_folder = '/path/to/your/image/folder/'
 
         # Create an in-memory byte stream to store the zip file
         zip_stream = io.BytesIO()
@@ -219,13 +219,13 @@ class downloadAlbum(View):
         # Create a ZipFile object with the in-memory byte stream
         with zipfile.ZipFile(zip_stream, 'w', zipfile.ZIP_DEFLATED) as zipf:
             # Loop through image files in the folder
-            for root, _, files in os.walk(image_folder):
+            for root, _ , files in os.walk(image_folder):
                 for file in files:
-                    if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
-                        image_path = os.path.join(root, file)
-                        with open(image_path, 'rb') as image_file:
-                            # Add image to the zip
-                            zipf.writestr(file, image_file.read())
+                    # if file.lower().endswith(('.png', '.jpg', '.jpeg')):
+                    image_path = os.path.join(root, file)
+                    with open(image_path, 'rb') as image_file:
+                        # Add image to the zip
+                        zipf.writestr(file, image_file.read())
 
         # Set up the HttpResponse with appropriate headers
         response = HttpResponse(zip_stream.getvalue(), content_type='application/zip')
