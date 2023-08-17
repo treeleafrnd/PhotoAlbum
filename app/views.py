@@ -13,6 +13,7 @@ import pathlib
 import js2py
 from django.conf import settings
 from .pdf import html2pdf
+from PIL import Image
 headers = {'content_type': 'application/json'}
 
 # js2py.eval_js('console.log("Hello World!")')
@@ -57,6 +58,20 @@ class AddAlbum(View):
                 # image_folder = os.path.join(settings.MEDIA_ROOT, str(a.id))
                 fs = FileSystemStorage(os.path.join(settings.MEDIA_ROOT, str(a.id)))
                 file_name = fs.save(file.name, file)
+                print(file.name)
+                # Open the uploaded image
+                image_path = os.path.join(settings.MEDIA_ROOT, str(a.id), file_name)
+                image = Image.open(image_path)
+
+                # Convert and save the image in JPEG format
+                jpg_filename = os.path.splitext(file_name)[0] + ".jpg"
+                jpg_path = os.path.join(settings.MEDIA_ROOT, str(a.id), jpg_filename)
+                image = image.convert("RGB")
+                image.save(jpg_path, "JPEG")
+                
+                substring = "jpg"
+                if substring not in file.name:
+                    os.remove(image_path)
  
         return redirect("/add/album/")
 
