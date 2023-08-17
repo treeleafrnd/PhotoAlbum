@@ -204,3 +204,14 @@ window.onclick = function (event) {
   }
   console.log("mouse click outside the popup box");
 };
+function confirmDelete() {
+  const result = window.confirm("Are you sure you want to delete this item?");
+
+  if (result) {
+    //
+  } else {
+    // Add code here if the user cancels the delete action
+    console.log("Delete canceled!");
+    event.preventDefault();
+  }
+}
