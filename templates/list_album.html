@@ -31,19 +31,17 @@
 
                     {% for key, value in image_collection.items %}
                         {% if key == image.id %}
-                            <div class="row">
-                                {% for element in value %}
-                                    <img
-                                        src="{{ MEDIA_URL }}/{{ image.id }}/{{ element }}" style="height: 1%;width: 20%;display: flex;" alt="">
-                                        <!-- <h6>{{ element }}</h6> -->
-                                        <form action="{% url 'app:delete_image' image.id element %}">
+                            {% for element in value %}
+                                <img
+                                    src="{{ MEDIA_URL }}/{{ image.id }}/{{ element }}" style="height: 100px;width:175px;display: flex; margin: 5px;" alt="">
+                                    <!-- <h6>{{ element }}</h6> -->
+                                    <form action="{% url 'app:delete_image' image.id element %}">
 
-                                            <button class="btn btn-danger btn-sm" type="submit" onclick="confirmDelete()">
-                                                <i class="fa fa-trash"></i>
-                                                Delete</button>
-                                        </form>
-                                    {% endfor %}
-                                </div>
+                                        <button class="btn btn-danger btn-sm" type="submit" onclick="confirmDelete()" style="margin: 5px;">
+                                            <i class="fa fa-trash"></i>
+                                            Delete</button>
+                                    </form>
+                                {% endfor %}
                             {% endif %}
                         {% endfor %}
                         <button onclick="closeEditTitle(`{{ image.id }}`)" class="btn btn-secondary btn-sm" style="margin-top: 15px; margin: 5px;">
