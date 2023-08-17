@@ -204,7 +204,8 @@ window.onclick = function (event) {
   }
   console.log("mouse click outside the popup box");
 };
-function confirmDelete() {
+
+function confirmDelete(event) {
   const result = window.confirm("Are you sure you want to delete this item?");
 
   if (result) {
