@@ -232,3 +232,4 @@ class downloadAlbum(View):
         response['Content-Disposition'] = f'attachment; filename="{album_name.title}.zip"'
 
         return response
+    

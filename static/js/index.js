@@ -20,22 +20,30 @@ function preview(event) {
     var file = elems.files[i];
     var filename = file.name;
     var imageDiv = document.createElement("div");
-    imageDiv.innerText = filename;
+    // imageDiv.style.marginLeft="auto";
+    // imageDiv.style.marginRight="auto";
+    // imageDiv.innerText = filename;
     imageDiv.id = "img-" + i;
     var image = document.createElement("img");
+    var linebreak = document.createElement("br");
     var url = URL.createObjectURL(event.target.files[i]);
     image.src = url;
+    // margin-left: auto; margin-right: auto;
     image.style.width = "200px";
     image.style.height = "80px";
+    // image.style.marginLeft = "auto";
+    // image.style.marginRight = "auto";
+    image.style.margin = "10px";
     mainDiv.append(imageDiv);
     imageDiv.append(image);
 
     var button = document.createElement("div");
 
     button.innerHTML = "Close";
-    button.className = "btn btn-secondary";
+    button.className = "btn btn-secondary btn-sm";
     button.id = i;
     imageDiv.append(button);
+    // imageDiv.append(linebreak);
     // End of DOM Manipulation
 
     // Button Onclick
@@ -56,7 +64,7 @@ function preview(event) {
       });
 
       files.splice(idxObj, 1);
-      console.log(files);
+      // console.log(files);
       for (let i = 0; i < files.length; i++) {
         if (dataTransfer[i] === files[i].name) {
           r = 0;
@@ -64,11 +72,12 @@ function preview(event) {
         dataTransfer.items.add(files[i]);
       }
 
-      console.log(dataTransfer);
+      // console.log(dataTransfer);
       elemsBackup.files = dataTransfer.files;
     };
   }
 }
+
 function previewAddedImage(event) {
   let files = [];
   var elemsBackup = document.getElementById("images");
@@ -85,20 +94,21 @@ function previewAddedImage(event) {
     var file = elems.files[i];
     var filename = file.name;
     var imageDiv = document.createElement("div");
-    imageDiv.innerText = filename;
+    // imageDiv.innerText = filename;
     imageDiv.id = "img-" + i;
     var image = document.createElement("img");
     var url = URL.createObjectURL(event.target.files[i]);
     image.src = url;
     image.style.width = "200px";
     image.style.height = "80px";
+    image.style.margin = "10px";
     mainDiv.append(imageDiv);
     imageDiv.append(image);
 
     var button = document.createElement("div");
 
     button.innerHTML = "Close";
-    button.className = "btn btn-secondary";
+    button.className = "btn btn-secondary btn-sm";
     button.id = i;
     imageDiv.append(button);
     // End of DOM Manipulation
@@ -111,7 +121,7 @@ function previewAddedImage(event) {
       x = document
         .getElementById("img-" + i.srcElement.firstChild.parentNode.id)
         .innerText.slice(0, -5);
-      console.log(x);
+      // console.log(x);
       // console.log(image_to_delete);
       mainDiv.removeChild(image_to_delete);
 
@@ -121,7 +131,7 @@ function previewAddedImage(event) {
       });
 
       files.splice(idxObj, 1);
-      console.log(files);
+      // console.log(files);
       for (let i = 0; i < files.length; i++) {
         if (dataTransfer[i] === files[i].name) {
           r = 0;
@@ -185,10 +195,12 @@ function closeEditTitle(x) {
   console.log("title update popup closed");
   console.log(x);
 }
-// var modal = document.getElementById("edit-title-{{ image.id }}");
+var modal = document.getElementsByClassName("popup");
 
-// window.onclick = function (event) {
-//   if (event.target == modal) {
-//     modal.style.display = "none";
-//   }
-// };
+window.onclick = function (event) {
+  if (event.target == modal) {
+    popup.style.display = "none";
+    console.log("mouse click outside the popup box");
+  }
+  console.log("mouse click outside the popup box");
+};
